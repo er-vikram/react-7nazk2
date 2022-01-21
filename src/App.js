@@ -1,11 +1,66 @@
 import React from "react";
 import "./style.css";
 
+const data = [
+  {
+    heading: 'Office Map',
+    desc: []
+  },
+  {
+    heading: 'New Employee',
+    desc: ['materials','Training']
+  },
+  {
+    heading: 'Office Events',
+    desc: [
+      {
+        heading: '2018',
+        desc: ['Summer Picnic','New year party']
+      }
+    ]
+  }
+]
+
+const isObject = (obj) => {
+  return Object.prototype.toString.call(obj) === '[object Object]';
+};
+
+const getNode = (node) => {
+  
+  const desc = node.desc.map((ele)=>{
+
+    if(!isObject(ele)) {
+      return <div className="point">{ele}</div>
+    }
+    return getNode(ele);
+  })
+
+  if(desc.length == 0) {
+    return <div>{node.heading}</div>
+  }
+
+  return (
+    <details>
+      <summary>
+        {node.heading}
+      </summary>
+      <div className="description">
+        {desc}
+      </div>
+    </details>
+  )
+}
+
 export default function App() {
+
+  const comp = data.map((node)=>{
+    const details = getNode(node);
+    return details;
+  })
+
   return (
     <div>
-      <h1>Hello StackBlitz!</h1>
-      <p>Start editing to see some magic happen :)</p>
+      {comp}
     </div>
   );
 }
